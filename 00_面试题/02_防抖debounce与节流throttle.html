@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<style>
+			.box {
+				width: 200px;
+				height: 200px;
+				background-color: #f00;
+			}
+		</style>
+	</head>
+	<body>
+		<input type="text" placeholder="请输入电话" />
+		<div class="box"></div>
+		<script>
+			// 防抖 => 将多次操作变为一次   固定时间内，事件只允许发生一次
+			let telInput = document.querySelector('input')
+			telInput.addEventListener('input', debounce(demo, 2000))
+			function debounce(event, time) {
+				let timer = null
+				return (args) => {
+					if (timer) clearTimeout(timer)
+					timer = setTimeout(event, time)
+				}
+			}
+
+			// 节流 => 保证一定时间内只调用一次   一定时间内的多个事件合为一个
+			// 应用场景 => 1.提交表单  2.高频监听事件
+			let box = document.querySelector('.box')
+			box.addEventListener('touchmove', throttle(demo, 2000))
+			function throttle(event, time) {
+				let timer = null
+				return function () {
+					if (!timer) {
+						timer = setTimeout(() => {
+							event()
+							timer = null
+						}, time)
+					}
+				}
+			}
+
+			// 模拟发送网络请求
+			function demo() {
+				console.log('发送网络请求')
+			}
+		</script>
+	</body>
+</html>
